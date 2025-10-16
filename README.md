@@ -1,9 +1,6 @@
 
 # CausalVerse: Benchmarking Causal Representation Learning with Configurable High-Fidelity Simulations
 
-<p align="center">
-  <img src="./assets/benchmark_overall.png" alt="CausalVerse Overview Figure" width="75%">
-</p>
 
 <p align="center">
   <a href="https://huggingface.co/CausalVerse">
@@ -46,8 +43,10 @@ Scenarios range from **static to temporal**, **single to multi-agent**, and **si
 ## 🗂️ Dataset at a Glance
 
 <p align="center">
-  <img src="./assets/benchmark_pie21.png" alt="CausalVerse Dataset Figure" width="50%">
+  <img src="./assets/causalverse_overall.png" alt="CausalVerse Overview Figure" width="45%">
+  <img src="./assets/causalverse_pie.png" alt="CausalVerse data info Figure" width="49.4%">
 </p>
+
 
 - **Scale & Coverage**: ≈ **200k** high-res images, ≈ **140k** videos, **>300M** frames across **24 scenes** in **4 domains**  
   - Image generation (4), Physical simulation (10; aggregated & dynamic), Robotic manipulation (5), Traffic (5)
