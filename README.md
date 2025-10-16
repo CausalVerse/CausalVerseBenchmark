@@ -1,6 +1,7 @@
 
 # CausalVerse: Benchmarking Causal Representation Learning with Configurable High-Fidelity Simulations
 
+<p align="center"> <img src="./assets/causalverse_intro.png" alt="CausalVerse Overview Figure" width="85%">
 
 <p align="center">
   <a href="https://huggingface.co/CausalVerse">
