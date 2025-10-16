@@ -1,0 +1,10 @@
+# Python bytecode caches
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+# CSV data files
+*.csv
+
+# PNG image files
+*.png
