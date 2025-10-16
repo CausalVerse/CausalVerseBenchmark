@@ -6,5 +6,6 @@ __pycache__/
 # CSV data files
 *.csv
 
-# PNG image files
-*.png
+
+# macOS system files
+.DS_Store
