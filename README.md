@@ -220,6 +220,14 @@ cd ../SUP && python main.py
 
 ---
 
+## 🎬 Video Part
+
+The `video_part/` directory contains the video-based temporal CRL pipeline used in this repository. It includes data preprocessing to latent sequences, training code for temporal CRL methods, and evaluation code for representation-level metrics such as MCC and R² on video datasets including physical simulation and robotics settings.
+
+For detailed usage and method-specific settings, refer to the corresponding paths inside [`video_part/`](video_part/).
+
+---
+
 ## 🙌 Acknowledgements
 
 We thank the open-source community and the simulation/rendering ecosystem. We also appreciate contributors who help improve CausalVerse through issues and pull requests.
@@ -240,4 +248,3 @@ If CausalVerse helps your research, please cite:
   url       = {https://huggingface.co/CausalVerse}
 }
 ```
-
