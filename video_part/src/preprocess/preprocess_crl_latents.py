@@ -182,7 +182,7 @@ def collect_uuids(meta_dir: Path) -> Iterable[str]:
 
 
 def default_latent_root(dataset_root: Path, dataset_type: str, latent_subdir: str) -> Path:
-    return dataset_root / "latents" / latent_subdir
+    return dataset_root / "latent" / latent_subdir
 
 
 def save_latent_file(

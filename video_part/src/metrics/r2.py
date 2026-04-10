@@ -31,6 +31,13 @@ def _disentanglement(z, hz, mode: __Mode = "r2", reorder=None):
     assert mode in ("r2", "accuracy")
 
     if mode == "r2":
+        z = np.asarray(z)
+        hz = np.asarray(hz)
+        if z.shape != hz.shape:
+            raise ValueError(f"Shape mismatch for R2: z has shape {z.shape}, hz has shape {hz.shape}")
+        if z.ndim > 1:
+            z = z.reshape(-1)
+            hz = hz.reshape(-1)
         return metrics.r2_score(z, hz), None
     elif mode == "accuracy":
         return metrics.accuracy_score(z, hz), None

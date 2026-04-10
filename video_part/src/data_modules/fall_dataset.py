@@ -7,6 +7,16 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from data_modules.video_dataset import VideoDataset
 
+
+def _available_latent_views(root_dir: str) -> List[str]:
+    latent_root = os.path.join(root_dir, "latent")
+    if not os.path.isdir(latent_root):
+        return []
+    return sorted(
+        name for name in os.listdir(latent_root)
+        if os.path.isdir(os.path.join(latent_root, name))
+    )
+
 class PhysicsFallDataset(VideoDataset):
     """
     Dataset for physics collision videos with multiple camera views and associated metadata
@@ -47,7 +57,7 @@ class PhysicsFallDataset(VideoDataset):
         
         self.meta_dir = os.path.join(root_dir, "meta")
         self.video_dir = os.path.join(root_dir, "video")
-        self.latents_dir = os.path.join(root_dir, "latents", latent_view)
+        self.latents_dir = os.path.join(root_dir, "latent", latent_view)
         self.uuid_to_meta = {}  # Maps UUID to metadata
 
         super().__init__(root_dir, transform, split, image_size,
@@ -64,7 +74,16 @@ class PhysicsFallDataset(VideoDataset):
         
         if self.only_latents:
             if not os.path.exists(self.latents_dir):
-                print(f"Error: Latents directory not found in {self.root_dir}")
+                latent_root = os.path.join(self.root_dir, "latent")
+                views = _available_latent_views(self.root_dir)
+                print(f"Error: Latent directory not found: {self.latents_dir}")
+                if os.path.isdir(latent_root):
+                    if views:
+                        print(f"Available latent views under {latent_root}: {', '.join(views)}")
+                    else:
+                        print(f"Latent root exists but contains no view directories: {latent_root}")
+                else:
+                    print(f"Latent root directory not found: {latent_root}")
                 return
         else:
             if not os.path.exists(self.video_dir):

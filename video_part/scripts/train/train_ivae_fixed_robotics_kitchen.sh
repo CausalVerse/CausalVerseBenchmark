@@ -8,6 +8,9 @@ init_new_paths
 PYTHON_BIN="${PYTHON_BIN:-python}"
 CONDA_SH="${CONDA_SH:-}"
 CONDA_ENV="${CONDA_ENV:-}"
+LATENT_VIEW="${LATENT_VIEW:-front}"
+LATENT_VIEW="$(normalize_fixed_robotics_latent_view "${LATENT_VIEW}")"
+VIEW_SUFFIX="$(latent_view_suffix "${LATENT_VIEW}" "front")"
 DATA_ROOT="${NEW_ROOT}/dataset/robotic_manipulation/kitchen"
 
 DATASET_NAME="fixed_robotics_kitchen"
@@ -26,7 +29,7 @@ AUX_NOISE_SCALE="${AUX_NOISE_SCALE:-1.0}"
 USE_MULTI_GPU="${USE_MULTI_GPU:-1}"
 GPU_IDS=(0 1 2 3 4 5 6 7)
 
-RUN_NAME="ivae_fixed_robotics_kitchen"
+RUN_NAME="ivae_fixed_robotics_kitchen${VIEW_SUFFIX}"
 LOG_DIR="${NEW_ROOT}/training-runs/ivae/${RUN_NAME}"
 TRAIN_LOG="${LOG_DIR}/${RUN_NAME}.log"
 TENSORBOARD_DIR="${LOG_DIR}/tensorboard"
@@ -43,6 +46,7 @@ fi
 
 echo "PYTHON_BIN=${PYTHON_BIN}"
 echo "PYTHON_EXE=$(which "${PYTHON_BIN}")"
+echo "LATENT_VIEW=${LATENT_VIEW}"
 
 if [[ "${USE_MULTI_GPU}" == "1" ]]; then
   GPU_CSV="$(IFS=,; echo "${GPU_IDS[*]}")"
@@ -51,6 +55,7 @@ if [[ "${USE_MULTI_GPU}" == "1" ]]; then
     "${CODE_DIR}/train_ivae.py" \
     --dataset_name "${DATASET_NAME}" \
     --dataset_path "${DATA_ROOT}" \
+  --latent_view "${LATENT_VIEW}" \
     --num_frames "${NUM_FRAMES}" \
     --clips_per_video "${CLIPS_PER_VIDEO}" \
     --batch_size "${BATCH_SIZE_PER_GPU}" \

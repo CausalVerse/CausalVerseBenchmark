@@ -183,7 +183,7 @@ if __name__ == "__main__":
     video_dataset = factory.create_dataset(
         name="fall",
         dataset_type="video",
-        dataset_path="dataset/physical_simulation/free_fall_simple",
+        dataset_path="dataset/physical_simulation/fall_simple",
         split="",
         image_size=(256, 256),
         num_frames=16,

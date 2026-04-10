@@ -10,7 +10,7 @@ PYTHON_BIN="${PYTHON_BIN:-python}"
 CONDA_SH="${CONDA_SH:-}"
 CONDA_ENV="${CONDA_ENV:-}"
 
-DATASET_ROOT="${NEW_ROOT}/dataset/robotic_manipulation/kitchen"
+DATASET_ROOT="${NEW_ROOT}/dataset/physical_simulation/fall_simple"
 PREPROCESS_PY="${NEW_ROOT}/src/preprocess/preprocess_crl_latents.py"
 VAE_PATH="${NEW_ROOT}/pretrained_models"
 
@@ -18,47 +18,18 @@ NUM_FRAMES=16
 INTERVAL=30
 MAX_START_FRAME=2
 IMAGE_SIZE=512
-CLIPS_PER_VIDEO=2
+CLIPS_PER_VIDEO=1
 ENCODE_BATCH_SIZE=8
 VIEW="${VIEW:-front}"
-DATASET_TYPE="fixed_robotics"
+VIEW="$(normalize_fall_latent_view "${VIEW}")"
+VIEW_SUFFIX="$(latent_view_suffix "${VIEW}" "front")"
+DATASET_TYPE="physics"
 
 GPU_IDS=(0 1 2 3 4 5 6 7)
 NUM_SHARDS="${#GPU_IDS[@]}"
 
-case "${VIEW}" in
-  front|frontview)
-    VIEW="front"
-    RUN_NAME="fixed_robotics_kitchen_sdvae_latents_front"
-    LATENT_ROOT="${DATASET_ROOT}/latents/front"
-    ;;
-  side|sideview)
-    VIEW="side"
-    RUN_NAME="fixed_robotics_kitchen_sdvae_latents_side"
-    LATENT_ROOT="${DATASET_ROOT}/latents/side"
-    ;;
-  bird|birdview)
-    VIEW="bird"
-    RUN_NAME="fixed_robotics_kitchen_sdvae_latents_bird"
-    LATENT_ROOT="${DATASET_ROOT}/latents/bird"
-    ;;
-  agent|agentview)
-    VIEW="agent"
-    RUN_NAME="fixed_robotics_kitchen_sdvae_latents_agent"
-    LATENT_ROOT="${DATASET_ROOT}/latents/agent"
-    ;;
-  eye|robot0_eye_in_hand)
-    VIEW="robot0_eye_in_hand"
-    RUN_NAME="fixed_robotics_kitchen_sdvae_latents_robot0_eye_in_hand"
-    LATENT_ROOT="${DATASET_ROOT}/latents/robot0_eye_in_hand"
-    ;;
-  *)
-    echo "[error] Unsupported VIEW=${VIEW}" >&2
-    echo "[hint] Use one of: front side bird agent robot0_eye_in_hand" >&2
-    exit 2
-    ;;
-esac
-
+RUN_NAME="fall_simple_sdvae_latent${VIEW_SUFFIX}"
+LATENT_ROOT="${DATASET_ROOT}/latent/${VIEW}"
 LOG_DIR="${NEW_ROOT}/logs/preprocess/${RUN_NAME}"
 
 mkdir -p "${LOG_DIR}"

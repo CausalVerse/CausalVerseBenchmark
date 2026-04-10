@@ -10,7 +10,7 @@ PYTHON_BIN="${PYTHON_BIN:-python}"
 CONDA_SH="${CONDA_SH:-}"
 CONDA_ENV="${CONDA_ENV:-}"
 
-DATASET_ROOT="${NEW_ROOT}/dataset/physical_simulation/free_fall_simple"
+DATASET_ROOT="${NEW_ROOT}/dataset/robotic_manipulation/kitchen"
 PREPROCESS_PY="${NEW_ROOT}/src/preprocess/preprocess_crl_latents.py"
 VAE_PATH="${NEW_ROOT}/pretrained_models"
 
@@ -18,29 +18,19 @@ NUM_FRAMES=16
 INTERVAL=30
 MAX_START_FRAME=2
 IMAGE_SIZE=512
-CLIPS_PER_VIDEO=1
+CLIPS_PER_VIDEO=2
 ENCODE_BATCH_SIZE=8
 VIEW="${VIEW:-front}"
-DATASET_TYPE="physics"
+VIEW="$(normalize_fixed_robotics_latent_view "${VIEW}")"
+VIEW_SUFFIX="$(latent_view_suffix "${VIEW}" "front")"
+DATASET_TYPE="fixed_robotics"
 
 GPU_IDS=(0 1 2 3 4 5 6 7)
 NUM_SHARDS="${#GPU_IDS[@]}"
 
-case "${VIEW}" in
-  front)
-    RUN_NAME="fall_simple_sdvae_latents"
-    LATENT_ROOT="${DATASET_ROOT}/latents/front"
-    ;;
-  right)
-    RUN_NAME="fall_simple_sdvae_latents_right"
-    LATENT_ROOT="${DATASET_ROOT}/latents/right"
-    ;;
-  *)
-    echo "[error] Unsupported VIEW=${VIEW}" >&2
-    echo "[hint] The current physics latent loaders are wired for VIEW=front and VIEW=right only." >&2
-    exit 2
-    ;;
-esac
+RUN_NAME="fixed_robotics_kitchen_sdvae_latent${VIEW_SUFFIX}"
+LATENT_ROOT="${DATASET_ROOT}/latent/${VIEW}"
+
 LOG_DIR="${NEW_ROOT}/logs/preprocess/${RUN_NAME}"
 
 mkdir -p "${LOG_DIR}"
@@ -67,6 +57,7 @@ fi
 echo "NEW_ROOT=${NEW_ROOT}"
 echo "WORKSPACE_ROOT=${WORKSPACE_ROOT}"
 echo "DATASET_ROOT=${DATASET_ROOT}"
+echo "VIEW=${VIEW}"
 echo "LATENT_ROOT=${LATENT_ROOT}"
 echo "LOG_DIR=${LOG_DIR}"
 echo "GPU_IDS=${GPU_IDS[*]}"

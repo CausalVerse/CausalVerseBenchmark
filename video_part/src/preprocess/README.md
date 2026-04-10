@@ -25,9 +25,8 @@ The current codebase uses the following path convention:
 
 - `src/preprocess/preprocess_crl_latents.py` accepts `--vae-path`, so you can pass either a
   local directory or a Hugging Face model id directly.
-- The helper scripts
-  `scripts/preprocess/preprocess_fall_simple_latents.sh` and
-  `scripts/preprocess/preprocess_fall_simple_latents_right.sh` default to
+- The helper script
+  `scripts/preprocess/preprocess_fall_simple_latent.sh` defaults to
   `VAE_PATH="${REPO_ROOT}/pretrained_models"` (or the equivalent repository root path resolved by
   the helper script), so by default they expect the SD-VAE files to be available under
   `pretrained_models/`.
@@ -43,10 +42,10 @@ work without code changes, the safest setup is to place a local snapshot of
 
 ## Example
 
-For the free-fall dataset, preprocessing can be launched through:
+For the fall dataset, preprocessing can be launched through:
 
-- `scripts/preprocess/preprocess_fall_simple_latents.sh`
-- `scripts/preprocess/preprocess_fall_simple_latents_right.sh`
+- `scripts/preprocess/preprocess_fall_simple_latent.sh`
+- `VIEW=right bash scripts/preprocess/preprocess_fall_simple_latent.sh`
 
 These scripts call the preprocessing code with the dataset-specific VAE checkpoint, camera view,
 frame count, image size, shard count, and output location.
@@ -55,12 +54,12 @@ frame count, image size, shard count, and output location.
 
 The source dataset should stay under the repository dataset tree, for example:
 
-- `dataset/physical_simulation/free_fall_simple/`
+- `dataset/physical_simulation/fall_simple/`
 
 The generated latent files are also written back under that dataset tree, for example:
 
-- `dataset/physical_simulation/free_fall_simple/latents/front/`
-- `dataset/physical_simulation/free_fall_simple/latents/right/`
+- `dataset/physical_simulation/fall_simple/latent/front/`
+- `dataset/physical_simulation/fall_simple/latent/right/`
 
 This keeps the preprocessed latents colocated with the original videos and metadata, matching the
 directory layout expected by the downstream dataset loaders and training scripts.

@@ -8,6 +8,9 @@ init_new_paths
 PYTHON_BIN="${PYTHON_BIN:-python}"
 CONDA_SH="${CONDA_SH:-}"
 CONDA_ENV="${CONDA_ENV:-}"
+LATENT_VIEW="${LATENT_VIEW:-front}"
+LATENT_VIEW="$(normalize_fixed_robotics_latent_view "${LATENT_VIEW}")"
+VIEW_SUFFIX="$(latent_view_suffix "${LATENT_VIEW}" "front")"
 DATA_ROOT="${NEW_ROOT}/dataset/robotic_manipulation/study"
 
 DATASET_NAME="fixed_robotics_study"
@@ -24,7 +27,7 @@ SEGMENT_SIZE=1
 USE_MULTI_GPU="${USE_MULTI_GPU:-1}"
 GPU_IDS=(0 1 2 3 4 5 6 7)
 
-RUN_NAME="tcl_fixed_robotics_study"
+RUN_NAME="tcl_fixed_robotics_study${VIEW_SUFFIX}"
 LOG_DIR="${NEW_ROOT}/training-runs/tcl/${RUN_NAME}"
 TRAIN_LOG="${LOG_DIR}/${RUN_NAME}.log"
 TENSORBOARD_DIR="${LOG_DIR}/tensorboard"
@@ -41,12 +44,14 @@ fi
 
 echo "PYTHON_BIN=${PYTHON_BIN}"
 echo "PYTHON_EXE=$(which "${PYTHON_BIN}")"
+echo "LATENT_VIEW=${LATENT_VIEW}"
 echo "GPU_IDS=${GPU_IDS[*]}"
 echo "USE_MULTI_GPU=${USE_MULTI_GPU}"
 
 COMMON_ARGS=(
   --dataset_name "${DATASET_NAME}"
   --dataset_path "${DATA_ROOT}"
+  --latent_view "${LATENT_VIEW}"
   --num_frames "${NUM_FRAMES}"
   --clips_per_video "${CLIPS_PER_VIDEO}"
   --batch_size "${BATCH_SIZE}"

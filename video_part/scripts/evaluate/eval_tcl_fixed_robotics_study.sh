@@ -9,6 +9,9 @@ init_new_paths
 PYTHON_BIN="${PYTHON_BIN:-python}"
 CONDA_SH="${CONDA_SH:-}"
 CONDA_ENV="${CONDA_ENV:-}"
+LATENT_VIEW="${LATENT_VIEW:-front}"
+LATENT_VIEW="$(normalize_fixed_robotics_latent_view "${LATENT_VIEW}")"
+VIEW_SUFFIX="$(latent_view_suffix "${LATENT_VIEW}" "front")"
 DATA_ROOT="${NEW_ROOT}/dataset/robotic_manipulation/study"
 
 DATASET_NAME="fixed_robotics_study"
@@ -19,12 +22,14 @@ Z_DIM=57
 MAX_SAMPLES=1000
 GPU_ID="${GPU_ID:-3}"
 REPR_MODE="${REPR_MODE:-agg}"
+R2_SELECT_MODE="${R2_SELECT_MODE:-best}"
 TOPK="${TOPK:-57}"
 EPOCH="${EPOCH:-100}"
 SEGMENT_SIZE="${SEGMENT_SIZE:-1}"
 
-CKPT_PATH="${CKPT_PATH:-${NEW_ROOT}/training-runs/tcl/tcl_fixed_robotics_study/checkpoints/vae_epoch${EPOCH}.pth}"
-LOG_PATH="${LOG_PATH:-${NEW_ROOT}/training-runs/tcl/tcl_fixed_robotics_study_eval_${REPR_MODE}.log}"
+RUN_NAME="tcl_fixed_robotics_study${VIEW_SUFFIX}"
+CKPT_PATH="${CKPT_PATH:-${NEW_ROOT}/training-runs/tcl/${RUN_NAME}/checkpoints/vae_epoch${EPOCH}.pth}"
+LOG_PATH="${LOG_PATH:-${NEW_ROOT}/training-runs/tcl/${RUN_NAME}_eval_${REPR_MODE}.log}"
 
 mkdir -p "$(dirname "${LOG_PATH}")"
 
@@ -38,9 +43,11 @@ CUDA_VISIBLE_DEVICES="${GPU_ID}" PYTHONUNBUFFERED=1 \
   "${PYTHON_BIN}" "${CODE_DIR}/evaluate.py" \
   --model tcl \
   --repr_mode "${REPR_MODE}" \
+  --r2_select_mode "${R2_SELECT_MODE}" \
   --topk "${TOPK}" \
   --dataset_name "${DATASET_NAME}" \
   --dataset_path "${DATA_ROOT}" \
+  --latent_view "${LATENT_VIEW}" \
   --num_frames "${NUM_FRAMES}" \
   --clips_per_video "${CLIPS_PER_VIDEO}" \
   --batch_size "${BATCH_SIZE}" \

@@ -12,12 +12,12 @@ training and evaluation entry points together with the shared frame-latent backb
 ## Example
 
 Using `iVAE` as an example, training on the right-view latents of the
-`physical_simulation/free_fall_simple` scene can be launched with:
+`physical_simulation/fall_simple` scene can be launched with:
 
 ```bash
 python src/train_ivae.py \
   --dataset_name fall \
-  --dataset_path dataset/physical_simulation/free_fall_simple \
+  --dataset_path dataset/physical_simulation/fall_simple \
   --latent_view right \
   --num_frames 16 \
   --clips_per_video 1 \
@@ -39,7 +39,7 @@ python src/evaluate.py \
   --model ivae \
   --repr_mode agg \
   --dataset_name fall \
-  --dataset_path dataset/physical_simulation/free_fall_simple \
+  --dataset_path dataset/physical_simulation/fall_simple \
   --latent_view right \
   --num_frames 16 \
   --clips_per_video 1 \
@@ -51,8 +51,8 @@ python src/evaluate.py \
 
 For latent-based training and evaluation, the dataset root should point to the scene directory
 under the domain-level dataset tree, while the latent subdirectory is selected separately through
-`--latent_view`. For example, `--dataset_path dataset/physical_simulation/free_fall_simple` with
-`--latent_view right` reads from `dataset/physical_simulation/free_fall_simple/latents/right/`.
+`--latent_view`. For example, `--dataset_path dataset/physical_simulation/fall_simple` with
+`--latent_view right` reads from `dataset/physical_simulation/fall_simple/latent/right/`.
 
 The evaluation entry point is intentionally flexible. Depending on the experiment, you can choose
 which ground-truth causal factors to evaluate against within each dataset definition, whether to
